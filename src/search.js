@@ -1,12 +1,12 @@
 import React, {  } from 'react';
-import { StyleSheet, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput } from 'react-native';
 
 const Search = props => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <TextInput
-          style={{ flex: 1 }}
+          style={styles.inputField}
           onChangeText={props.onChangeText}
         />
       </View>
@@ -16,15 +16,18 @@ const Search = props => {
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
-    height: 40,
-    padding: 20
+    padding: 20,
   },
   wrapper: {
     borderWidth: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    height: 40
+  },
+  inputField: {
+    width: '100%',
+    height: '100%'
   }
 });
 
