@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { SafeAreaView, StatusBar, View, FlatList, Text, StyleSheet } from 'react-native';
+import useDeviceOrientation from '@rnhooks/device-orientation';
 
 import Search from './src/search';
 
@@ -9,6 +10,9 @@ const App = () => {
   const [data, setData] = useState([]);
   const [text, setText] = useState("");
   const [list, setList] = useState([]);
+  const [row, setRow] = useState(1);
+
+  const deviceOrientation = useDeviceOrientation();
 
   useEffect(() => {
     _getContacts();
@@ -22,6 +26,16 @@ const App = () => {
 
   }, [text]);
 
+  useEffect(() => {
+    if (deviceOrientation == 'portrait') {
+      setRow(1);
+    } else if (deviceOrientation == 'landscape') {
+      setRow(2);
+    } else {
+      setRow(1);
+    }
+  }, [deviceOrientation]);
+
   _getContacts = () => {
     fetch('https://k-messages-api.herokuapp.com/api/v1/contacts', {
       method: 'GET',
@@ -30,8 +44,7 @@ const App = () => {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + token
       }
-    })
-      .then((response) => response.json())
+    }).then((response) => response.json())
       .then((json) => {
         setList(json.contacts);
         setData(json.contacts);
@@ -66,9 +79,10 @@ const App = () => {
         {`Displaying ${data.length} of ${list.length} Contacts`}
       </Text>
       <FlatList
+        key={row.toString()}
         style={styles.alignItems}
-        keyExtractor={(_, index) => index.toString()}
         data={data}
+        numColumns={row}
         renderItem={renderItem}
       />
     </SafeAreaView>
@@ -81,7 +95,10 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     margin: 25
   },
+  alignItems: {
+  },
   item: {
+    flex: 1,
     marginHorizontal: 20,
     marginBottom: 10,
     borderWidth: 1,

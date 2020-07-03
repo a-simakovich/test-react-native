@@ -987,6 +987,11 @@
     eslint-plugin-react-native "3.6.0"
     prettier "1.16.4"
 
+"@rnhooks/device-orientation@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@rnhooks/device-orientation/-/device-orientation-0.0.1.tgz#18b153c0b20d5929989e75ad3ef6cadd6568d5d6"
+  integrity sha512-70MgeOqSpm3/NvhFXOhAv4K2Q17/nK3cLS5H3XpjPatsbYGmVSY6HafJvm0FqFc2BQsshyiYtILycWrJUpbm0Q==
+
 "@types/babel__core@^7.1.0":
   version "7.1.9"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.9.tgz#77e59d438522a6fb898fa43dc3455c6e72f3963d"
