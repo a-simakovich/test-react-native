@@ -1,6 +1,16 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { SafeAreaView, StatusBar, View, FlatList, Text, StyleSheet } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { 
+  SafeAreaView, 
+  StatusBar, 
+  View, 
+  FlatList, 
+  Text,
+  TouchableOpacity,
+  StyleSheet 
+} from 'react-native';
 import useDeviceOrientation from '@rnhooks/device-orientation';
+import DropdownAlert from 'react-native-dropdownalert';
+import Clipboard from '@react-native-community/clipboard';
 
 import Search from './src/search';
 
@@ -11,19 +21,21 @@ const App = () => {
   const [text, setText] = useState("");
   const [list, setList] = useState([]);
   const [row, setRow] = useState(1);
-
+  const [lines, setLines] = useState(1);
+  
   const deviceOrientation = useDeviceOrientation();
+  var ref = useRef();
 
   useEffect(() => {
     _getContacts();
-  });
+  }, []);
 
   useEffect(() => {
     if (text == "") {
       setData(list);
       return;
     }
-
+    _search(text);
   }, [text]);
 
   useEffect(() => {
@@ -54,18 +66,49 @@ const App = () => {
       });
   }
 
+  _search = text => {
+    var array = [];
+    list.map((item) => {
+      const { name } = item;
+      if (name.toLowerCase().includes(text.toLowerCase())) array.push(item);
+    });
+    setData(array);
+  }
+
   onChangeText = text => {
     setText(text);
   }
 
+  onItem = email => {
+    ref.current.alertWithType("success", "Clipboard", "Copied");
+    Clipboard.setString(email);
+    
+    if (lines == 1) {
+      setLines(2);
+    } else {
+      setLines(1);
+    }
+  }
+
   renderItem = ({ item, index }) => {
     const { name, email } = item;
+
     return (
-      <View style={styles.item}>
-        <Text numberOfLines={2}>{name}</Text>
+      <TouchableOpacity 
+        key={index} 
+        style={styles.item}
+        onPress={() => onItem(email)}
+      >
+        <Text numberOfLines={lines}>{name}</Text>
         <View style={{ height: 10 }} />
-        <Text numberOfLines={2}>{email}</Text>
-      </View>
+        <Text numberOfLines={lines}>{email}</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  renderBottom = () => {
+    return (
+      <View style={styles.bottom} />
     );
   }
 
@@ -80,22 +123,21 @@ const App = () => {
       </Text>
       <FlatList
         key={row.toString()}
-        style={styles.alignItems}
         data={data}
         numColumns={row}
+        keyboardShouldPersistTaps='always'
         renderItem={renderItem}
+        ListFooterComponent={renderBottom}
       />
+      <DropdownAlert ref={ref} />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   resultTxt: {
-    width: '90%',
     alignContent: 'center',
     margin: 25
-  },
-  alignItems: {
   },
   item: {
     flex: 1,
@@ -103,6 +145,9 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderWidth: 1,
     padding: 10,
+  },
+  bottom: {
+    height: 150
   }
 });
 
