@@ -1,5 +1,6 @@
 import React, {  } from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Search = props => {
   return (
@@ -9,6 +10,7 @@ const Search = props => {
           style={styles.inputField}
           onChangeText={props.onChangeText}
         />
+        <Icon name="search" size={20} />
       </View>
     </View>
   );
@@ -26,8 +28,7 @@ const styles = StyleSheet.create({
     height: 40
   },
   inputField: {
-    width: '100%',
-    height: '100%'
+    flex: 1
   }
 });
 

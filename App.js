@@ -48,18 +48,16 @@ const App = () => {
   renderItem = ({ item, index }) => {
     const { name, email } = item;
     return (
-      <View style={styles.itemContainer}>
-        <View style={styles.item}>
-          <Text numberOfLines={2}>{name}</Text>
-          <View style={{ height: 10 }} />
-          <Text numberOfLines={2}>{email}</Text>
-        </View>
+      <View style={styles.item}>
+        <Text numberOfLines={2}>{name}</Text>
+        <View style={{ height: 10 }} />
+        <Text numberOfLines={2}>{email}</Text>
       </View>
     );
   }
 
   return (
-    <SafeAreaView emulateUnlessSupported={false}>
+    <SafeAreaView>
       <StatusBar />
       <Search
         onChangeText={onChangeText}
@@ -81,14 +79,10 @@ const styles = StyleSheet.create({
   resultTxt: {
     width: '90%',
     alignContent: 'center',
-    margin: 20
-  },
-  itemContainer: {
-    width: '100%',
-    alignItems: 'center'
+    margin: 25
   },
   item: {
-    width: '90%',
+    marginHorizontal: 20,
     marginBottom: 10,
     borderWidth: 1,
     padding: 10,
